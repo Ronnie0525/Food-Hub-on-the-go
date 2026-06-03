@@ -1,0 +1,118 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  * {
+    border-color: theme('colors.surface.border');
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-ink text-cream font-sans antialiased;
+    /* Subtle warm vignette so the dark never reads as flat black */
+    background-image:
+      radial-gradient(1200px 600px at 50% -10%, rgba(200, 149, 74, 0.08), transparent 60%),
+      radial-gradient(900px 500px at 85% 110%, rgba(184, 115, 51, 0.06), transparent 55%);
+    background-attachment: fixed;
+  }
+
+  ::selection {
+    background: theme('colors.gold.500');
+    color: theme('colors.ink');
+  }
+
+  /* Accessible, on-brand focus ring */
+  :focus-visible {
+    outline: 2px solid theme('colors.gold.400');
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  /* Slim, themed scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: theme('colors.coal');
+  }
+  ::-webkit-scrollbar-thumb {
+    background: theme('colors.surface.border');
+    border-radius: 999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: theme('colors.gold.700');
+  }
+}
+
+@layer components {
+  .container-x {
+    @apply mx-auto w-full max-w-content px-5 sm:px-8 lg:px-10;
+  }
+
+  .eyebrow {
+    @apply inline-flex items-center gap-3 text-[11px] font-medium uppercase tracking-eyebrow text-gold-300;
+  }
+
+  /* Thin gold rule used beside eyebrows */
+  .eyebrow::before {
+    content: '';
+    @apply h-px w-8 bg-gold-500/70;
+  }
+
+  .link-underline {
+    @apply relative;
+  }
+  .link-underline::after {
+    content: '';
+    @apply absolute -bottom-1 left-0 h-px w-0 bg-gold-400 transition-all duration-300 ease-out-soft;
+  }
+  .link-underline:hover::after {
+    @apply w-full;
+  }
+}
+
+@layer utilities {
+  .text-gradient-gold {
+    @apply bg-gradient-to-r from-gold-200 via-gold-400 to-gold-600 bg-clip-text text-transparent;
+  }
+
+  /* Scroll-reveal: hidden until .is-visible is added by the IntersectionObserver hook */
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition:
+      opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Respect users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
