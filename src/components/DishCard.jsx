@@ -1,10 +1,9 @@
-import { Link } from 'react-router-dom'
 import Img from './Img'
 import Badge from './Badge'
 
 /**
- * Premium, clickable dish card with image zoom on hover. The whole card links
- * to the menu; a stretched overlay link keeps it accessible and keyboard-focusable.
+ * Premium dish card with image zoom on hover. Clicking the photo opens it in the
+ * full-screen lightbox.
  */
 export default function DishCard({ dish }) {
   return (
@@ -13,6 +12,7 @@ export default function DishCard({ dish }) {
         <Img
           src={dish.image}
           alt={dish.alt}
+          zoomable
           className="h-full w-full"
           imgClassName="h-full w-full object-cover transition-transform duration-700 ease-out-soft group-hover:scale-110"
         />
@@ -35,13 +35,6 @@ export default function DishCard({ dish }) {
         </div>
         <p className="text-sm leading-relaxed text-cream-muted">{dish.description}</p>
       </div>
-
-      {/* Stretched, accessible link covering the whole card */}
-      <Link
-        to="/menu"
-        className="absolute inset-0"
-        aria-label={`View ${dish.name} on the menu`}
-      />
     </article>
   )
 }

@@ -66,6 +66,7 @@ export default function MenuCategory({ category }) {
               <Img
                 src={item.image}
                 alt={item.alt || item.name}
+                zoomable
                 className="h-full w-full"
                 imgClassName="h-full w-full object-cover transition-transform duration-500 ease-out-soft group-hover:scale-110"
               />

@@ -116,6 +116,7 @@ export default function Home() {
               <Img
                 src={images.story}
                 alt={images.storyAlt}
+                zoomable
                 className="aspect-[4/5] w-full"
                 imgClassName="h-full w-full object-cover transition-transform duration-700 ease-out-soft hover:scale-105"
               />

@@ -69,6 +69,7 @@ export default function About() {
                   src={chef.photo}
                   alt={chef.photoAlt}
                   loading="eager"
+                  zoomable
                   className="aspect-[4/5] w-full"
                   imgClassName="h-full w-full object-cover"
                 />
@@ -173,6 +174,7 @@ export default function About() {
               <Img
                 src={images.story}
                 alt={images.storyAlt}
+                zoomable
                 className="aspect-[4/3] w-full"
                 imgClassName="h-full w-full object-cover"
               />

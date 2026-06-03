@@ -1,12 +1,26 @@
 import { useState } from 'react'
+import { useLightbox } from './Lightbox'
 
 /**
  * Resilient image. If the remote source fails, it gracefully swaps to a warm
  * gold-on-charcoal gradient with the Food Hub monogram, so a broken URL never
  * leaves an ugly placeholder in an otherwise polished layout.
+ *
+ * Pass `zoomable` to make the image open in the full-screen lightbox on click
+ * (keyboard accessible). `zoomSrc` overrides the image shown in the lightbox.
  */
-export default function Img({ src, alt = '', className = '', imgClassName = '', loading = 'lazy', ...rest }) {
+export default function Img({
+  src,
+  alt = '',
+  className = '',
+  imgClassName = '',
+  loading = 'lazy',
+  zoomable = false,
+  zoomSrc,
+  ...rest
+}) {
   const [failed, setFailed] = useState(false)
+  const lightbox = useLightbox()
 
   if (failed) {
     return (
@@ -20,6 +34,9 @@ export default function Img({ src, alt = '', className = '', imgClassName = '', 
     )
   }
 
+  const interactive = zoomable && lightbox
+  const openZoom = () => lightbox?.open({ src: zoomSrc || src, alt })
+
   return (
     <img
       src={src}
@@ -27,7 +44,21 @@ export default function Img({ src, alt = '', className = '', imgClassName = '', 
       loading={loading}
       decoding="async"
       onError={() => setFailed(true)}
-      className={`${className} ${imgClassName}`.trim()}
+      onClick={interactive ? openZoom : undefined}
+      onKeyDown={
+        interactive
+          ? (e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault()
+                openZoom()
+              }
+            }
+          : undefined
+      }
+      role={interactive ? 'button' : undefined}
+      tabIndex={interactive ? 0 : undefined}
+      aria-label={interactive ? `View larger: ${alt}` : undefined}
+      className={`${className} ${imgClassName} ${interactive ? 'cursor-zoom-in' : ''}`.trim()}
       {...rest}
     />
   )
